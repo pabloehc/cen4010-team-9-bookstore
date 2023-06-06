@@ -10,9 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-    @Query("SELECT u FROM User u")
-    Double calculateTotalPriceByUser(@Param("user") String user);
-    void deleteByBookAndUser(Book book, User user);
     List<CartItem> findAllByUser(User user);
-    void findByBookIdAndUserId(Long bookId, Long userId);
+    List<CartItem> findAllByUserAndBook(User user, Book book);
+    List<CartItem> findAllById(Long id);
+
 }

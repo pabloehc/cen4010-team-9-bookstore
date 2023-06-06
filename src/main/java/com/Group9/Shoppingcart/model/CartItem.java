@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
  @Entity
-public class CartItem {
+ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

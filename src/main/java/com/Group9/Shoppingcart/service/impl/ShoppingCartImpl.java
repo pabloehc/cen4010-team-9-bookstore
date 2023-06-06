@@ -19,24 +19,34 @@ public class ShoppingCartImpl implements ShoppingCartService {
     public ShoppingCartImpl(ShoppingCartRepository repository) {
         this.repository = repository;
     }
-
     @Override
-    public double getUserCartTotalPrice(User userId) {
-       return 0;
-    }
-    @Override
-    public void addBookToCart(User userId, Book bookId) {
-
-
-    }
-
-    @Override
-    public List<Book> getAllUserBookInCart(String userId) {
+    public String createShoppingCart(ShoppingCart cart) {
         return null;
     }
 
     @Override
-    public void deleteBookFromUserCart(String userId, String bookId) {
+    public String updateShoppingCart(ShoppingCart cart) {
+        return null;
+    }
 
+    @Override
+    public String deleteShoppingCart(String cartId) {
+        return null;
+    }
+
+    @Override
+    public ShoppingCart getShoppingCart(String cartId) {
+        return null;
+    }
+
+    @Override
+    public List<ShoppingCart> getAllShoppingCart() {
+        return null;
+    }
+
+    @Override
+    public List<ShoppingCart> getById(String cartId) {
+        return null;
     }
 }
+

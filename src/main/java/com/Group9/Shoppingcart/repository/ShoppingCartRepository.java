@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
-  @Query("SELECT s FROM ShoppingCart s")
-   ShoppingCart getShoppingCartByCartItems(Set<CartItem> cartItems);
+    List<ShoppingCart> findAllById(Long id);
 }
 

@@ -9,13 +9,38 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).get();
+    public String createUser(User user) {
+        return null;
+    }
+
+    @Override
+    public String updateUser(User user) {
+        return null;
+    }
+
+    @Override
+    public String deleteUser(String userId) {
+        return null;
+    }
+
+    @Override
+    public User getUser(String userId) {
+        return null;
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+        return null;
+    }
+
+    @Override
+    public List<User> getById(String userId) {
+        return null;
     }
 }

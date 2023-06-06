@@ -1,10 +1,7 @@
 package com.Group9.Shoppingcart.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.ManyToAny;
 
-import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,14 +13,14 @@ public class User {
     private String username;
     private String password;
     @OneToMany
-    private List<Book> books;
+    private List<Book> userBooks;
     public User() {
     }
 
     public User( String username, String password) {
         this.username = username;
         this.password = password;
-        books = new ArrayList<>();
+        userBooks = new ArrayList<>();
     }
 
     public Long getId() {
@@ -54,19 +51,19 @@ public class User {
         this.password = password;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<Book> getUserBooks() {
+        return userBooks;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setUserBooks(List<Book> books) {
+        this.userBooks = books;
     }
 
     @Override
     public String toString() {
         return "User-"+id+" username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", books=" + books +
+                ", books=" + userBooks +
                 '}';
     }
 
