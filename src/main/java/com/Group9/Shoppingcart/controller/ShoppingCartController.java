@@ -24,23 +24,15 @@ public class ShoppingCartController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/total-price{userId}")
-        public double getTotalPriceByUserId(@PathVariable("userId") User userId) {
-          return shoppingCartService.getUserCartTotalPrice(userId);
-        }
-    @PostMapping("/add-book/{userId}/{bookId}")
-    public ResponseEntity<String> addBookToCart(@PathVariable("userId") Long userId, @PathVariable("bookId") Long bookId) {
-
-        User user = userService.getUserById(userId);
-        Book book = bookService.getBookById(bookId);
-        if (user == null || book == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        shoppingCartService.addBookToCart(user, book);
-        return ResponseEntity.ok("Book added to cart successfully.");
+    @PostMapping("/addBookToCart")
+    public ResponseEntity<String> addBookToCart(@RequestBody Book book) {
+        bookService.getAllCBooks().add(book);
+        return ResponseEntity.ok(bookService.createBook(book));
     }
+
+
+
+
 
 
  }
