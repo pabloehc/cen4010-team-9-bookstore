@@ -12,15 +12,16 @@ public class User {
     private Long id;
     private String username;
     private String password;
+
     @OneToMany
-    private List<Book> userBooks;
+    private List<Book> books;
     public User() {
     }
 
     public User( String username, String password) {
         this.username = username;
         this.password = password;
-        userBooks = new ArrayList<>();
+        books = new ArrayList<>();
     }
 
     public Long getId() {
@@ -51,19 +52,19 @@ public class User {
         this.password = password;
     }
 
-    public List<Book> getUserBooks() {
-        return userBooks;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setUserBooks(List<Book> books) {
-        this.userBooks = books;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override
     public String toString() {
         return "User-"+id+" username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", books=" + userBooks +
+                ", books=" + books +
                 '}';
     }
 

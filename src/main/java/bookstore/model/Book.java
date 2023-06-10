@@ -21,8 +21,6 @@ public class Book {
     private String publisher;
     private int yearPublished;
     private int copiesSold;
-    @OneToMany
-    private List<Book> books;
 
     public Book() {
     }
@@ -37,7 +35,6 @@ public class Book {
         this.publisher = publisher;
         this.yearPublished = yearPublished;
         this.copiesSold = copiesSold;
-        books = new ArrayList<>();
     }
 
     public Long getId() {
@@ -118,14 +115,6 @@ public class Book {
 
     public void setCopiesSold(int soldCopies) {
         this.copiesSold = soldCopies;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
     }
 
     @Override
