@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/bookstore")
 public class BookstoreController {
@@ -23,9 +25,19 @@ public class BookstoreController {
         this.userService = userService;
     }
 
-    @PostMapping("/addBookToCart")
-    public ResponseEntity<String> addBookToCart(@RequestBody Book book) {
-        bookService.getAllCBooks().add(book);
-        return ResponseEntity.ok(bookService.createBook(book));
+    @PostMapping("/book")
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        return ResponseEntity.ok().body(bookService.createBook(book));
+    }
+
+    @GetMapping("/book/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable(value = "id") Long bookId) {
+        Optional<Book> maybeBook = bookService.getBook(bookId);
+
+        if (maybeBook.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(maybeBook.get());
     }
  }

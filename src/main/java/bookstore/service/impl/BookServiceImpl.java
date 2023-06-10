@@ -6,6 +6,8 @@ import bookstore.service.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements BookService {
     BookRepository bookRepository;
@@ -15,9 +17,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String createBook(Book book) {
-        bookRepository.save(book);
-        return "Book created successfully";
+    public Book createBook(Book book) {
+        return bookRepository.save(book);
     }
 
     @Override
@@ -31,8 +32,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBook(String bookId) {
-        return null;
+    public Optional<Book> getBook(Long bookId) {
+        return bookRepository.findById(bookId);
     }
 
     @Override
