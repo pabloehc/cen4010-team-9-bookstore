@@ -2,8 +2,6 @@ package bookstore.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -146,7 +144,7 @@ public class Book {
         return Objects.hash(id);
     }
 
-    public double getPrice(CartItem cartItem) {
+    public double getPrice(ShoppingCart shoppingCart) {
         return getPrice();
     }
 }

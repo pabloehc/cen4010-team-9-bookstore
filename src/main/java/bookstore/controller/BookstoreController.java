@@ -1,6 +1,8 @@
 package bookstore.controller;
 
 import bookstore.model.Book;
+import bookstore.model.ShoppingCart;
+import bookstore.model.User;
 import bookstore.service.BookService;
 import bookstore.service.ShoppingCartService;
 import bookstore.service.UserService;
@@ -8,36 +10,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/bookstore")
 public class BookstoreController {
 
-    private final ShoppingCartService shoppingCartService;
     private final BookService bookService;
     private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
 
     @Autowired
-    public BookstoreController(ShoppingCartService shoppingCartService, BookService bookService, UserService userService) {
-        this.shoppingCartService = shoppingCartService;
+    public BookstoreController(BookService bookService, UserService userService, ShoppingCartService shoppingCartService) {
         this.bookService = bookService;
         this.userService = userService;
+        this.shoppingCartService = shoppingCartService;
     }
 
+    // adding a book
     @PostMapping("/book")
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         return ResponseEntity.ok().body(bookService.createBook(book));
     }
 
+    // getting a book
     @GetMapping("/book/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable(value = "id") Long bookId) {
         Optional<Book> maybeBook = bookService.getBook(bookId);
-
-        if (maybeBook.isEmpty()) {
+        if (maybeBook.isEmpty())
             return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok().body(maybeBook.get());
     }
- }
+
+    // adding a user
+    @PostMapping("/user")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return ResponseEntity.ok().body(userService.createUser(user));
+    }
+
+    // adding a book to the User's cart
+    @PostMapping("/add-book-to-cart/{userId}/{bookId}")
+    public ResponseEntity<String> addBookToCart(@PathVariable(value = "userId") Long userId, @PathVariable(value = "bookId") Long bookId) {
+       List<ShoppingCart> maybeShoppingCart = shoppingCartService.getByBookIdAndUserId(bookId, userId);
+       if (maybeShoppingCart.isEmpty()) {
+           shoppingCartService.create(userId, bookId);
+           return ResponseEntity.ok().body("Book added to User's cart!");
+       }
+       return ResponseEntity.ok().body("Book already in User's cart!");
+    }
+}
+
+
+
+
