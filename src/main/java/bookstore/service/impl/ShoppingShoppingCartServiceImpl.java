@@ -46,7 +46,6 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
         return totalPrice;
     }
 
-
     @Override
     public Set<Book> getAllCartItems(Long userId) {
       Set<Book> books = new HashSet<>();
