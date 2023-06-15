@@ -95,6 +95,6 @@ public class BookstoreController {
     // getting total price (ShoppingCart Get Request)
     @GetMapping("/total-price/{userId}")
     public ResponseEntity<String> totalPrice(@PathVariable(value = "userId") Long userId) {
-        return ResponseEntity.ok().body(String.valueOf("$"+ shoppingCartService.getTotalPrice(userId)));
+        return ResponseEntity.ok().body("$" + shoppingCartService.getTotalPrice(userId));
     }
 }
