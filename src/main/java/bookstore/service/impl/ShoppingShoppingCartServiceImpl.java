@@ -60,7 +60,6 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
     public List<ShoppingCart> getByBookIdAndUserId(Long bookId, Long userId) {
         return shoppingCartRepository.findAllByUser_IdAndBook_Id(userId, bookId);
     }
-
     @Override
     public void delete(Long book_id, Long user_id, Long quantity) {
         List<ShoppingCart> shoppingCart = shoppingCartRepository.findAllByUser_IdAndBook_Id(user_id, book_id);
@@ -80,7 +79,6 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
         for (ShoppingCart c : shoppingCart) {
             c.setQuantity(c.getQuantity() + quantity);
             shoppingCartRepository.save(c);
-
         }
     }
 
