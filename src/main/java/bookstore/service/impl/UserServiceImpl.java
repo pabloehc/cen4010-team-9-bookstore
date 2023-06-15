@@ -15,8 +15,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String createUser(User user) {
-        return null;
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String userId) {
-        return null;
+    public User getUser(Long userId) {
+       return userRepository.findById(userId).get();
     }
 
     @Override

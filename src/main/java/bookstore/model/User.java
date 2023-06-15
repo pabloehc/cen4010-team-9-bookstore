@@ -1,10 +1,13 @@
 package bookstore.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 @Entity
 public class User {
     @Id
@@ -12,7 +15,8 @@ public class User {
     private Long id;
     private String username;
     private String password;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ShoppingCart> shoppingCarts;
     @OneToMany
     private List<Book> books;
     public User() {
@@ -22,13 +26,10 @@ public class User {
         this.username = username;
         this.password = password;
         books = new ArrayList<>();
+        shoppingCarts = new ArrayList<>();
     }
 
     public Long getId() {
-        return id;
-    }
-    public Long getId(Long id) {
-
         return id;
     }
 
@@ -50,6 +51,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<ShoppingCart> getShoppingCarts() {
+        return shoppingCarts;
+    }
+
+    public void setShoppingCarts(List<ShoppingCart> shoppingCarts) {
+        this.shoppingCarts = shoppingCarts;
     }
 
     public List<Book> getBooks() {

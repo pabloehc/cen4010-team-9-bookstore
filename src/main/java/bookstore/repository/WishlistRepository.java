@@ -1,7 +1,5 @@
 package bookstore.repository;
 
-import bookstore.model.Book;
-import bookstore.model.CartItem;
 import bookstore.model.User;
 import bookstore.model.Wishlist;
 import org.springframework.data.jpa.repository.JpaRepository;
