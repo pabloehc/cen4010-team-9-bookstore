@@ -59,11 +59,10 @@ public class BookstoreController {
            shoppingCartService.create(userId, bookId, quantity);
            return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!");
        }
-       Long addedQuantity = quantity;
-       quantity += userCarts.get(0).getQuantity();
-       shoppingCartService.update(userId, bookId, addedQuantity);
-       return ResponseEntity.ok().body(addedQuantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!\n" +
-               "The total book/s with bookId: "+ bookId +" in User's cart: " + userCarts.get(0).getQuantity());
+
+       shoppingCartService.update(userId, bookId, quantity);
+       return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!\n" +
+               "The total book/s with bookId: "+ bookId +" in User's cart: " + userCarts.get(0).getQuantity()); //replaced quantity by addedQuantity
     }
 
     // deleting books from User's cart (ShoppingCart Delete Request)
