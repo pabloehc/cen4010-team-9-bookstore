@@ -96,19 +96,4 @@ public class BookstoreController {
     public ResponseEntity<String> totalPrice(@PathVariable(value = "userId") Long userId) {
         return ResponseEntity.ok().body(String.valueOf("$"+ shoppingCartService.getTotalPrice(userId)));
     }
-
 }
-
-//        if (shoppingCartService.getByBookIdAndUserId(bookId, userId).get(0).getQuantity() < quantity) {
-//            return ResponseEntity.badRequest().body("Number of books to delete from User's cart (" + quantity + ") is greater than the total (" + shoppingCartService.getByBookIdAndUserId(bookId, userId).get(0).getQuantity() + ") of books in User's cart!");
-//        }
-
-//        else if (shoppingCartService.getByBookIdAndUserId(bookId, userId).get(0).getQuantity().equals(quantity)) {
-//            shoppingCartService.delete(userId, bookId, quantity);
-//            return ResponseEntity.badRequest().body("No books left in User's cart!");
-//        }
-//        shoppingCartService.delete(userId, bookId, quantity);
-//        return ResponseEntity.ok().body(quantity + " book/s deleted from User's cart! \n"
-//                 + shoppingCartService.getByBookIdAndUserId(bookId, userId).get(0).getQuantity() + " book/s left in User's cart!");
-
-
