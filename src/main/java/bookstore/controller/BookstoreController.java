@@ -66,7 +66,7 @@ public class BookstoreController {
                "The total book/s with bookId: "+ bookId +" in User's cart: " + userCarts.get(0).getQuantity());
     }
 
-    // delete book/s from User's cart (ShoppingCart Delete Request)
+    // deleting books from User's cart (ShoppingCart Delete Request)
     @DeleteMapping("/delete-book-from-cart/{userId}/{bookId}/{quantity}")
     public ResponseEntity<String> delete(@PathVariable(value = "userId") Long userId, @PathVariable(value = "bookId") Long bookId, @PathVariable(value = "quantity") Long quantity) {
         List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
@@ -86,12 +86,13 @@ public class BookstoreController {
         return ResponseEntity.badRequest().body("No books with bookId: " + bookId +" left in User's cart!");
     }
 
-    // get all books in User's cart (ShoppingCart Get Request)
+    // getting books from User's cart (ShoppingCart Get Request)
     @GetMapping("/list-books-in-cart/{userId}")
     public ResponseEntity<Set<Book>> listBooksInCart(@PathVariable(value = "userId") Long userId) {
         return ResponseEntity.ok().body(shoppingCartService.getAllCartItems(userId));
     }
-    // get total price from User's cart (ShoppingCart Get Request)
+
+    // getting total price (ShoppingCart Get Request)
     @GetMapping("/total-price/{userId}")
     public ResponseEntity<String> totalPrice(@PathVariable(value = "userId") Long userId) {
         return ResponseEntity.ok().body(String.valueOf("$"+ shoppingCartService.getTotalPrice(userId)));
