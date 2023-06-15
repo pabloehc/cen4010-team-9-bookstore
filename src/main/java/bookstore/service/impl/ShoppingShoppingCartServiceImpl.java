@@ -24,14 +24,13 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
         this.bookRepository = bookRepository;
     }
     @Override
-    public void create(Long userId, Long bookId) {
-
+    public void create(Long userId, Long bookId, Long quantity) {
         ShoppingCart shoppingCart = new ShoppingCart();
         User user = userRepository.findById(userId).get();
         Book book = bookRepository.findById(bookId).get();
         shoppingCart.setUser(user);
         shoppingCart.setBook(book);
-        shoppingCart.setQuantity(1);
+        shoppingCart.setQuantity(quantity);
         shoppingCart.setPrice(book.getPrice());
         shoppingCartRepository.save(shoppingCart);
     }
@@ -39,7 +38,8 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public double getTotalPrice(Long user) {
         double totalPrice = 0;
-        for (ShoppingCart c : shoppingCartRepository.findAllById(user)) {
+        for (ShoppingCart c : shoppingCartRepository.findAllByUser_Id(user)) {
+            totalPrice += c.getPrice() * c.getQuantity();
         }
         return totalPrice;
     }

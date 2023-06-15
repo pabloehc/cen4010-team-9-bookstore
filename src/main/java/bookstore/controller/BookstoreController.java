@@ -49,15 +49,20 @@ public class BookstoreController {
         return ResponseEntity.ok().body(userService.createUser(user));
     }
 
-    // adding a book to the User's cart
-    @PostMapping("/add-book-to-cart/{userId}/{bookId}")
-    public ResponseEntity<String> addBookToCart(@PathVariable(value = "userId") Long userId, @PathVariable(value = "bookId") Long bookId) {
-       List<ShoppingCart> maybeShoppingCart = shoppingCartService.getByBookIdAndUserId(bookId, userId);
-       if (maybeShoppingCart.isEmpty()) {
-           shoppingCartService.create(userId, bookId);
+    // adding books to User's cart
+    @PostMapping("/add-book-to-cart/{userId}/{bookId}/{quantity}")
+    public ResponseEntity<String> addBookToCart(@PathVariable(value = "userId") Long userId, @PathVariable(value = "bookId") Long bookId, @PathVariable(value = "quantity") Long quantity) {
+       List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
+       if (userCarts.isEmpty()) {
+           shoppingCartService.create(userId, bookId, quantity);
            return ResponseEntity.ok().body("Book added to User's cart!");
        }
        return ResponseEntity.ok().body("Book already in User's cart!");
+    }
+    // get total price from User's cart
+    @GetMapping("/total-price/{userId}")
+    public ResponseEntity<String> totalPrice(@PathVariable(value = "userId") Long userId) {
+        return ResponseEntity.ok().body(String.valueOf("$"+ shoppingCartService.getTotalPrice(userId)));
     }
 }
 

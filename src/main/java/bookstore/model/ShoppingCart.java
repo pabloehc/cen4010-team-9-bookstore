@@ -14,7 +14,7 @@ import java.util.Objects;
     private User user;
     @ManyToOne
     private Book book;
-    private int quantity;
+    private Long quantity;
     private double price;
 
 
@@ -25,7 +25,7 @@ import java.util.Objects;
         this.user = user;
         this.book = book;
         price = book.getPrice();
-        quantity = 1;
+        quantity = 1L;
     }
 
      public Long getId() {
@@ -52,11 +52,11 @@ import java.util.Objects;
          this.book = book;
      }
 
-     public int getQuantity() {
+     public Long getQuantity() {
          return quantity;
      }
 
-     public void setQuantity(int quantity) {
+     public void setQuantity(Long quantity) {
          this.quantity = quantity;
      }
 
