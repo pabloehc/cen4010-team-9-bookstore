@@ -9,7 +9,9 @@ import bookstore.repository.UserRepository;
 import bookstore.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
@@ -46,12 +48,42 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
 
 
     @Override
-    public List<ShoppingCart> getAllCartItems(Long userId) {
-      return shoppingCartRepository.findAllByUser_Id(userId).stream().toList();
+    public Set<Book> getAllCartItems(Long userId) {
+      Set<Book> books = new HashSet<>();
+       for (ShoppingCart shoppingCart: shoppingCartRepository.findAllByUser_Id(userId)) {
+           books.add(shoppingCart.getBook());
+       }
+        return books;
     }
 
     @Override
     public List<ShoppingCart> getByBookIdAndUserId(Long bookId, Long userId) {
         return shoppingCartRepository.findAllByUser_IdAndBook_Id(userId, bookId);
     }
-}
+
+    @Override
+    public void delete(Long book_id, Long user_id, Long quantity) {
+        List<ShoppingCart> shoppingCart = shoppingCartRepository.findAllByUser_IdAndBook_Id(user_id, book_id);
+        for (ShoppingCart c : shoppingCart) {
+            c.setQuantity(c.getQuantity() - quantity);
+            shoppingCartRepository.save(c);
+            if (c.getQuantity() == 0) {
+                shoppingCartRepository.delete(c);
+            }
+        }
+    }
+
+    @Override
+    public void update(Long userId, Long bookId, Long quantity) {
+
+        List<ShoppingCart> shoppingCart = shoppingCartRepository.findAllByUser_IdAndBook_Id(userId, bookId);
+        for (ShoppingCart c : shoppingCart) {
+            c.setQuantity(c.getQuantity() + quantity);
+            shoppingCartRepository.save(c);
+
+        }
+    }
+
+    }
+
+
