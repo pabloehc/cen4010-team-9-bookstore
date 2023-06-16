@@ -10,7 +10,7 @@ public interface ShoppingCartService {
 
     public void create(Long userId, Long bookId, Long quantity);
     public double getTotalPrice(Long user);
-    public Set<Book> getAllCartItems(Long userId);
+    public List<Book> getAllCartItems(Long userId);
     public List<ShoppingCart> getByBookIdAndUserId(Long bookId, Long userId);
     public void delete(Long book_id, Long user_id, Long quantity);
     public void update(Long userId, Long bookId, Long quantity);

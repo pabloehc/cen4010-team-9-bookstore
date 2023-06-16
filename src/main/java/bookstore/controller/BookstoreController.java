@@ -86,7 +86,9 @@ public class BookstoreController {
 
     // get all books in User's cart (ShoppingCart Get Request)
     @GetMapping("/list-books-in-cart/{userId}")
-    public ResponseEntity<Set<Book>> listBooksInCart(@PathVariable(value = "userId") Long userId) {
+    public ResponseEntity<List<Book>> listBooksInCart(@PathVariable(value = "userId") Long userId) {
+        if (shoppingCartService.getAllCartItems(userId).isEmpty())
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(shoppingCartService.getAllCartItems(userId));
     }
     // get total price from User's cart (ShoppingCart Get Request)

@@ -9,6 +9,7 @@ import bookstore.repository.UserRepository;
 import bookstore.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,10 +48,12 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Set<Book> getAllCartItems(Long userId) {
-      Set<Book> books = new HashSet<>();
-       for (ShoppingCart shoppingCart: shoppingCartRepository.findAllByUser_Id(userId)) {
-           books.add(shoppingCart.getBook());
+    public List<Book> getAllCartItems(Long userId) {
+        List<Book> books = new ArrayList<>();
+       for (ShoppingCart s : shoppingCartRepository.findAllByUser_Id(userId)) {
+           for (int i = 0; i < s.getQuantity(); i++) {
+               books.add(s.getBook());
+           }
        }
         return books;
     }
