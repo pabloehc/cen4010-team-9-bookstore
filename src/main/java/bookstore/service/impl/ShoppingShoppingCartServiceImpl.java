@@ -9,7 +9,10 @@ import bookstore.repository.UserRepository;
 import bookstore.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
@@ -24,14 +27,13 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
         this.bookRepository = bookRepository;
     }
     @Override
-    public void create(Long userId, Long bookId) {
-
+    public void create(Long userId, Long bookId, Long quantity) {
         ShoppingCart shoppingCart = new ShoppingCart();
         User user = userRepository.findById(userId).get();
         Book book = bookRepository.findById(bookId).get();
         shoppingCart.setUser(user);
         shoppingCart.setBook(book);
-        shoppingCart.setQuantity(1);
+        shoppingCart.setQuantity(quantity);
         shoppingCart.setPrice(book.getPrice());
         shoppingCartRepository.save(shoppingCart);
     }
@@ -39,19 +41,49 @@ public class ShoppingShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public double getTotalPrice(Long user) {
         double totalPrice = 0;
-        for (ShoppingCart c : shoppingCartRepository.findAllById(user)) {
+        for (ShoppingCart c : shoppingCartRepository.findAllByUser_Id(user)) {
+            totalPrice += c.getPrice() * c.getQuantity();
         }
         return totalPrice;
     }
 
-
     @Override
-    public List<ShoppingCart> getAllCartItems(Long userId) {
-      return shoppingCartRepository.findAllByUser_Id(userId).stream().toList();
+    public List<Book> getAllCartItems(Long userId) {
+        List<Book> books = new ArrayList<>();
+       for (ShoppingCart s : shoppingCartRepository.findAllByUser_Id(userId)) {
+           for (int i = 0; i < s.getQuantity(); i++) {
+               books.add(s.getBook());
+           }
+       }
+        return books;
     }
 
     @Override
     public List<ShoppingCart> getByBookIdAndUserId(Long bookId, Long userId) {
         return shoppingCartRepository.findAllByUser_IdAndBook_Id(userId, bookId);
     }
-}
+    @Override
+    public void delete(Long book_id, Long user_id, Long quantity) {
+        List<ShoppingCart> shoppingCart = shoppingCartRepository.findAllByUser_IdAndBook_Id(user_id, book_id);
+        for (ShoppingCart c : shoppingCart) {
+            c.setQuantity(c.getQuantity() - quantity);
+            shoppingCartRepository.save(c);
+            if (c.getQuantity() == 0) {
+                shoppingCartRepository.delete(c);
+            }
+        }
+    }
+
+    @Override
+    public void update(Long userId, Long bookId, Long quantity) {
+
+        List<ShoppingCart> shoppingCart = shoppingCartRepository.findAllByUser_IdAndBook_Id(userId, bookId);
+        for (ShoppingCart c : shoppingCart) {
+            c.setQuantity(c.getQuantity() + quantity);
+            shoppingCartRepository.save(c);
+        }
+    }
+
+    }
+
+
