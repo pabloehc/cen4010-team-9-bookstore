@@ -1,5 +1,6 @@
 package bookstore.service;
 
+import bookstore.model.Author;
 import bookstore.model.Book;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public interface BookService {
     public String deleteBook(String bookId);
     public Optional<Book> getBook(Long bookId);
     public List<Book> getAllCBooks();
-    public List<Book> getByISBN(String isbn);
+    public List<Book> findByISBN(String isbn);
+    public List<Book> findByAuthor(String author);
 
 }

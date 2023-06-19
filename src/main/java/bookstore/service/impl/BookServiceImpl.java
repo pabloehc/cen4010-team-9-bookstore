@@ -1,5 +1,6 @@
 package bookstore.service.impl;
 
+import bookstore.model.Author;
 import bookstore.repository.BookRepository;
 import bookstore.model.Book;
 import bookstore.service.BookService;
@@ -42,7 +43,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getByISBN(String isbn) {
+    public List<Book> findByISBN(String isbn)
+    {
+        return null;
+    }
+    @Override
+    public List<Book> findByAuthor(String author)
+    {
         return null;
     }
 }
