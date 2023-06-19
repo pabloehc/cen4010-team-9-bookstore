@@ -18,6 +18,19 @@ public class Author
     @Column
     private String biography;
 
+    public Author()
+    {
+
+    }
+
+    public Author(String firstName, String lastName, String publisher, String biography)
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.publisher = publisher;
+        this.biography = biography;
+    }
+
     public Long getId() {
         return id;
     }

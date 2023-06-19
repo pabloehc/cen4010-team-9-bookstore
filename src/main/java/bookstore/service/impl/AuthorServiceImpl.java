@@ -2,8 +2,11 @@ package bookstore.service.impl;
 
 import bookstore.model.Author;
 import bookstore.repository.AuthorRepository;
+import bookstore.service.AuthorService;
+import org.springframework.stereotype.Service;
 
-public class AuthorService
+@Service
+public class AuthorServiceImpl implements AuthorService
 {
     AuthorRepository authorRepository;
     public Author createAuthor(Author author)
