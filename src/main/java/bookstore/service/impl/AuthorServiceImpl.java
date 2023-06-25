@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 public class AuthorServiceImpl implements AuthorService
 {
     AuthorRepository authorRepository;
+
+    public AuthorServiceImpl(AuthorRepository authorRepository)
+    {
+        this.authorRepository = authorRepository;
+    }
     public Author createAuthor(Author author)
     {
         return authorRepository.save(author);
@@ -27,4 +32,11 @@ public class AuthorServiceImpl implements AuthorService
         Author delete = authorRepository.findById(id).get();
         authorRepository.delete(delete);
     }
+    public String getAuthorFullName(Long id)
+    {
+        Author temp = authorRepository.findById(id).get();
+        String fullName = temp.getFirstName() + " " + temp.getLastName();
+        return fullName;
+    }
+
 }

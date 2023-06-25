@@ -51,13 +51,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void storeAuthor()
-    {
-
-    }
-
-
-    @Override
     public Optional<Book> getBook(Long bookId) {
         return bookRepository.findById(bookId);
     }
@@ -73,8 +66,8 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findByISBN(isbn);
     }
     @Override
-    public List<Book> findByAuthor(String author)
+    public List<Book> getByAuthor(String author)
     {
-        return bookRepository.findByAuthor(author);
+        return bookRepository.findAllByAuthor(author);
     }
 }

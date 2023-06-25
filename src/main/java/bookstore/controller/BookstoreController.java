@@ -54,6 +54,13 @@ public class BookstoreController {
         return ResponseEntity.ok().body(authorService.createAuthor(author));
     }
 
+    //getting books from author id
+    @GetMapping("/author/{id}")
+    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable(value = "id") Long authorId)
+    {
+        return ResponseEntity.ok().body(bookService.getByAuthor(authorService.getAuthorFullName(authorId)));
+    }
+
     // adding a user
     @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody User user) {
