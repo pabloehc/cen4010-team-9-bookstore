@@ -2,6 +2,9 @@ package bookstore.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Author
 {
@@ -71,4 +74,5 @@ public class Author
     public void setBiography(String biography) {
         this.biography = biography;
     }
+    List<String> authors = new ArrayList<>();
 }

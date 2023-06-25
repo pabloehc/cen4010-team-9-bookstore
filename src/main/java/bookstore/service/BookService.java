@@ -10,8 +10,9 @@ public interface BookService {
     public Book createBook(Book book);
     public Book updateBook(Long bookId, Book book);
     public void deleteBook(Long bookId);
+    public void storeAuthor();
     public Optional<Book> getBook(Long bookId);
     public List<Book> getAllCBooks();
     public List<Book> findByISBN(String isbn);
-    public List<Book> findByAuthor(Long authorId);
+    public List<Book> findByAuthor(String author);
 }

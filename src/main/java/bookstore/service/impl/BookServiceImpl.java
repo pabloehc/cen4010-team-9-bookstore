@@ -7,6 +7,7 @@ import bookstore.model.Book;
 import bookstore.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +24,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book createBook(Book book)
     {
-        //Creates new author alongside book creation
-        String[] fullName = book.getAuthor().split(" ");
-        Author author = new Author(fullName[0],fullName[1],book.getPublisher(),null);
-        authorService.createAuthor(author);
         return bookRepository.save(book);
     }
 
@@ -54,6 +51,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void storeAuthor()
+    {
+
+    }
+
+
+    @Override
     public Optional<Book> getBook(Long bookId) {
         return bookRepository.findById(bookId);
     }
@@ -69,8 +73,8 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findByISBN(isbn);
     }
     @Override
-    public List<Book> findByAuthor(Long authorId)
+    public List<Book> findByAuthor(String author)
     {
-        return bookRepository.findByAuthor(authorId);
+        return bookRepository.findByAuthor(author);
     }
 }
