@@ -1,8 +1,10 @@
 package bookstore.controller;
 
+import bookstore.model.Author;
 import bookstore.model.Book;
 import bookstore.model.ShoppingCart;
 import bookstore.model.User;
+import bookstore.service.AuthorService;
 import bookstore.service.BookService;
 import bookstore.service.ShoppingCartService;
 import bookstore.service.UserService;
@@ -19,14 +21,16 @@ import java.util.Set;
 public class BookstoreController {
 
     private final BookService bookService;
+    private final AuthorService authorService;
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
 
     @Autowired
-    public BookstoreController(BookService bookService, UserService userService, ShoppingCartService shoppingCartService) {
+    public BookstoreController(BookService bookService, AuthorService authorService, UserService userService, ShoppingCartService shoppingCartService) {
         this.bookService = bookService;
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
+        this.authorService = authorService;
     }
 
     // adding a book
@@ -42,6 +46,19 @@ public class BookstoreController {
         if (maybeBook.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(maybeBook.get());
+    }
+
+    //adding an author
+    @PostMapping("/author")
+    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
+        return ResponseEntity.ok().body(authorService.createAuthor(author));
+    }
+
+    //getting books from author id
+    @GetMapping("/author/{id}")
+    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable(value = "id") Long authorId)
+    {
+        return ResponseEntity.ok().body(bookService.getByAuthor(authorService.getAuthorFullName(authorId)));
     }
 
     // adding a user
