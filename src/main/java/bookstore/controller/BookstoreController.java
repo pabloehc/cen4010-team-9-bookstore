@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookstore")
@@ -39,5 +40,16 @@ public class BookstoreController {
         }
 
         return ResponseEntity.ok().body(maybeBook.get());
+    }
+
+    @GetMapping("/books/genre")
+    public ResponseEntity<List<Book>> getBooksByGenre(@RequestParam String genre) {
+        List<Book> books = bookService.getBooksByGenre(genre);
+
+        if (books.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(books);
     }
  }

@@ -11,6 +11,9 @@ public interface BookService {
     public String deleteBook(String bookId);
     public Optional<Book> getBook(Long bookId);
     public List<Book> getAllCBooks();
+
+    List<Book> getBooksByGenre(String genre);
+
     public List<Book> getByISBN(String isbn);
 
 }

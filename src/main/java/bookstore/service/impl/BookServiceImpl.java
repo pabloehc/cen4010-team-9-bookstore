@@ -42,6 +42,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> getBooksByGenre(String genre) {
+        return bookRepository.findByGenre(genre);
+    }
+
+    @Override
     public List<Book> getByISBN(String isbn) {
         return null;
     }
