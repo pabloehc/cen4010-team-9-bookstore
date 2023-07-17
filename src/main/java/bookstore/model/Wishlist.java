@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table
 public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,17 +4,14 @@ import bookstore.model.Author;
 import bookstore.model.Book;
 import bookstore.model.ShoppingCart;
 import bookstore.model.User;
-import bookstore.service.AuthorService;
-import bookstore.service.BookService;
-import bookstore.service.ShoppingCartService;
-import bookstore.service.UserService;
+import bookstore.model.Wishlist;
+import bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/bookstore")
@@ -24,13 +21,15 @@ public class BookstoreController {
     private final AuthorService authorService;
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
+    private final WishlistService wishlistService;
 
     @Autowired
-    public BookstoreController(BookService bookService, AuthorService authorService, UserService userService, ShoppingCartService shoppingCartService) {
+    public BookstoreController(BookService bookService, AuthorService authorService, UserService userService, ShoppingCartService shoppingCartService, WishlistService wishlistService) {
         this.bookService = bookService;
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
         this.authorService = authorService;
+        this.wishlistService = wishlistService;
     }
 
     // adding a book
@@ -114,3 +113,4 @@ public class BookstoreController {
         return ResponseEntity.ok().body("$" + shoppingCartService.getTotalPrice(userId));
     }
 }
+
