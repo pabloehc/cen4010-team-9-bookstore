@@ -35,8 +35,8 @@ public class AuthorServiceImpl implements AuthorService
     public String getAuthorFullName(Long id)
     {
         Author temp = authorRepository.findById(id).get();
-        String fullName = temp.getFirstName() + " " + temp.getLastName();
-        return fullName;
+        String name = temp.getFirstName() + " " + temp.getLastName();
+        return name;
     }
 
 }
