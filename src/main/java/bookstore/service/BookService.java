@@ -16,4 +16,5 @@ public interface BookService {
 
     public List<Book> getByISBN(String isbn);
 
+    List<Book> getBooksByRating(Double rating);
 }

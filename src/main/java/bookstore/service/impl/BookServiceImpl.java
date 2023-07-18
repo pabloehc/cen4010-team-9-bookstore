@@ -50,4 +50,8 @@ public class BookServiceImpl implements BookService {
     public List<Book> getByISBN(String isbn) {
         return null;
     }
+
+    public List<Book> getBooksByRating(Double rating) {
+        return bookRepository.findByRatingGreaterThanEqual(rating);
+    }
 }

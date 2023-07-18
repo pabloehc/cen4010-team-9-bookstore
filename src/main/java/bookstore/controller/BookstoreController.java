@@ -52,4 +52,14 @@ public class BookstoreController {
 
         return ResponseEntity.ok().body(books);
     }
+    @GetMapping("/books/rating")
+    public ResponseEntity<List<Book>> getBooksByRating(@RequestParam Double rating) {
+        List<Book> books = bookService.getBooksByRating(rating);
+
+        if (books.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(books);
+    }
  }
