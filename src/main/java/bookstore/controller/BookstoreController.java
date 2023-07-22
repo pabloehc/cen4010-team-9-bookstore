@@ -1,15 +1,13 @@
 package bookstore.controller;
 
-import bookstore.model.Author;
-import bookstore.model.Book;
-import bookstore.model.ShoppingCart;
-import bookstore.model.User;
-import bookstore.model.Wishlist;
+import bookstore.model.*;
 import bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +20,20 @@ public class BookstoreController {
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
     private final WishlistService wishlistService;
+    private final RatingService ratingService;
+    private final CommentService commentService;
 
     @Autowired
-    public BookstoreController(BookService bookService, AuthorService authorService, UserService userService, ShoppingCartService shoppingCartService, WishlistService wishlistService) {
+    public BookstoreController(BookService bookService, AuthorService authorService, UserService userService,
+                               ShoppingCartService shoppingCartService, WishlistService wishlistService,
+                               RatingService ratingService, CommentService commentService) {
         this.bookService = bookService;
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
         this.authorService = authorService;
         this.wishlistService = wishlistService;
+        this.ratingService = ratingService;
+        this.commentService = commentService;
     }
 
     // adding a book
@@ -111,6 +115,30 @@ public class BookstoreController {
     @GetMapping("/total-price/{userId}")
     public ResponseEntity<String> totalPrice(@PathVariable(value = "userId") Long userId) {
         return ResponseEntity.ok().body("$" + shoppingCartService.getTotalPrice(userId));
+    }
+
+    @PostMapping("/rating")
+    public ResponseEntity<Rating>createBook(@RequestBody Rating rating) {
+        rating.setDate(new Date());
+        return ResponseEntity.ok().body(ratingService.create(rating));
+    }
+
+    @GetMapping("/rating/average/{bookId}")
+    public ResponseEntity<String> getBookAverageRating(@PathVariable(value = "bookId") Long bookId) {
+        var format = new DecimalFormat("#.#");
+        var average = ratingService.getAverageRating(bookId);
+        return ResponseEntity.ok().body(format.format(average));
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<Comment>createComment(@RequestBody Comment comment) {
+        comment.setDate(new Date());
+        return ResponseEntity.ok().body(commentService.create(comment));
+    }
+
+    @GetMapping("/comment/book/{bookId}")
+    public ResponseEntity<List<Comment>> getCommentsForBook(@PathVariable(value = "bookId") Long bookId) {
+        return ResponseEntity.ok().body(commentService.findByBookId(bookId));
     }
 }
 
