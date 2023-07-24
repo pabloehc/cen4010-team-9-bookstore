@@ -4,15 +4,10 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table
 public class Wishlist {
-
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     private User user;
     private String wishlistName;
@@ -57,5 +52,28 @@ public class Wishlist {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return "Wishlist{" +
+                "id=" + id +
+                ", user=" + user +
+                ", wishlistName='" + wishlistName + '\'' +
+                ", books=" + books +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wishlist wishlist = (Wishlist) o;
+        return Objects.equals(id, wishlist.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

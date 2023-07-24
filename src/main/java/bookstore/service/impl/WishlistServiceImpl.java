@@ -2,9 +2,10 @@ package bookstore.service.impl;
 
 import bookstore.model.Wishlist;
 import bookstore.service.WishlistService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class WishlistServiceImpl implements WishlistService {
     @Override
     public String createWishlist(Wishlist wishlist) {
