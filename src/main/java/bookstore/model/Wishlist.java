@@ -8,8 +8,7 @@ public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private User user;
+    private Long userId;
     private String wishlistName;
     @OneToMany
     private List<Book> books;
@@ -17,10 +16,10 @@ public class Wishlist {
     public Wishlist(){
     }
 
-    public Wishlist(User user, String wishlistName){
-        this.user = user;
+    public Wishlist(Long userId, String wishlistName){
+        this.userId = userId;
         this.wishlistName = wishlistName;
-        books = new ArrayList<>();
+        this.books = new ArrayList<>();
     }
 
     public Long getId() {
@@ -31,34 +30,34 @@ public class Wishlist {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-    public String getWishlistName() {
-        return wishlistName;
-    }
+    public String getWishlistName() {return wishlistName;}
 
     public void setWishlistName(String wishlistName) {
         this.wishlistName = wishlistName;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public void addBooks(Book book) {
+        books.add(book);
     }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void removeBooks(Long bookId){
+        books.removeIf(book -> book.getId() == bookId);
+    }
+    public String getBooks(){
+        return "Books{" + books +'\'' +"}";
     }
 
     @Override
     public String toString() {
         return "Wishlist{" +
                 "id=" + id +
-                ", user=" + user +
+                ", userId=" + userId +
                 ", wishlistName='" + wishlistName + '\'' +
                 ", books=" + books +
                 '}';

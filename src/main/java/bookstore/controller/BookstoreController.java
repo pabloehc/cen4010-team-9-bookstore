@@ -73,6 +73,14 @@ public class BookstoreController {
     // adding books to User's cart (ShoppingCart Post Request)
     @PostMapping("/add-book-to-cart/{userId}/{bookId}/{quantity}")
     public ResponseEntity<String> addBookToCart(@PathVariable(value = "userId") Long userId, @PathVariable(value = "bookId") Long bookId, @PathVariable(value = "quantity") Long quantity) {
+       List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
+       if (userCarts.isEmpty()) {
+           shoppingCartService.create(userId, bookId, quantity);
+           return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!");
+       }
+       shoppingCartService.update(userId, bookId, quantity);
+       return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!\n" +
+               "The total book/s with bookId: "+ bookId +" in User's cart: " + userCarts.get(0).getQuantity());
         List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
 
         if (userCarts.isEmpty()) {
@@ -162,6 +170,27 @@ public class BookstoreController {
     public ResponseEntity<List<Comment>> getCommentsForBook(@PathVariable(value = "bookId") Long bookId) {
         return ResponseEntity.ok().body(commentService.findByBookId(bookId));
     }
+
+    //creating wishlist
+    @PostMapping("/wishlist/{wishlistName}/{userId}")
+    public ResponseEntity<Wishlist> createWishlist(@RequestBody @PathVariable (value = "wishlistName") String wishlistName, @PathVariable(value = "userId") Long userId){
+        return ResponseEntity.ok().body(wishlistService.createWishlist(wishlistName, userId));
+    }
+    //add a book to user's wishlist
+    @PostMapping("/wishlist/{bookId}/{id}")
+    public ResponseEntity<Wishlist> updateWishlist(@RequestBody @PathVariable(value = "bookId") Long bookId, @PathVariable(value = "id") Long wishlistId){
+        return ResponseEntity.ok().body(wishlistService.updateWishlist(bookId, wishlistId));
+    }
+    //remove a book from user's wishlist
+    @DeleteMapping("/wishlist/{bookId}/{id}")
+    public ResponseEntity<Wishlist> deleteFromWishlist(@RequestBody @PathVariable (value = "bookId") Long bookId, @PathVariable(value = "id") Long wishlistId) {
+        return ResponseEntity.ok().body(wishlistService.deleteFromWishlist(bookId, wishlistId));
+    }
+    //get list of books from user's wishlist
+    @GetMapping("wishlist/{id}")
+    public ResponseEntity<Optional<Wishlist>> getWishlist(@RequestBody @PathVariable(value = "id") Long wishlistId){
+        return ResponseEntity.ok().body(wishlistService.getWishlist(wishlistId));
+
     @GetMapping("/books/top-sellers")
     public ResponseEntity<List<Book>> getTopSellers() {
         List<Book> books = bookService.getTopSellersBooks();
@@ -181,4 +210,5 @@ public class BookstoreController {
         return ResponseEntity.noContent().build();
     }
 }
+
 
