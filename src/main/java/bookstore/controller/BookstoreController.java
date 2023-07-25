@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookstore")
@@ -59,8 +60,7 @@ public class BookstoreController {
 
     //getting books from author id
     @GetMapping("/author/{id}")
-    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable(value = "id") Long authorId)
-    {
+    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable(value = "id") Long authorId) {
         return ResponseEntity.ok().body(bookService.getByAuthor(authorService.getAuthorFullName(authorId)));
     }
 
@@ -81,6 +81,15 @@ public class BookstoreController {
        shoppingCartService.update(userId, bookId, quantity);
        return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!\n" +
                "The total book/s with bookId: "+ bookId +" in User's cart: " + userCarts.get(0).getQuantity());
+        List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
+
+        if (userCarts.isEmpty()) {
+            shoppingCartService.create(userId, bookId, quantity);
+            return ResponseEntity.ok().body(quantity + " book/s with bookId: " + bookId + " was/were added to User's cart!");
+        }
+        shoppingCartService.update(userId, bookId, quantity);
+        return ResponseEntity.ok().body(quantity + " book/s with bookId: " + bookId + " was/were added to User's cart!\n" +
+                "The total book/s with bookId: " + bookId + " in User's cart: " + userCarts.get(0).getQuantity());
     }
 
     // delete book/s from User's cart (ShoppingCart Delete Request)
@@ -89,18 +98,17 @@ public class BookstoreController {
         List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
         for (ShoppingCart cart : userCarts) {
             if (cart.getQuantity() - quantity < 0) {
-                return ResponseEntity.badRequest().body("Number of books with bookId: " + bookId +" to delete from User's cart (" + quantity + ") is greater than the total (" + cart.getQuantity() + ") of books with bookId: " + bookId + " in User's cart!");
-            }
-            else if (cart.getQuantity() - quantity == 0) {
+                return ResponseEntity.badRequest().body("Number of books with bookId: " + bookId + " to delete from User's cart (" + quantity + ") is greater than the total (" + cart.getQuantity() + ") of books with bookId: " + bookId + " in User's cart!");
+            } else if (cart.getQuantity() - quantity == 0) {
                 shoppingCartService.delete(bookId, userId, quantity);
-                return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were deleted from User's cart!\n" +
-                        "No books with bookId: "+ bookId +" left in User's cart!");
+                return ResponseEntity.ok().body(quantity + " book/s with bookId: " + bookId + " was/were deleted from User's cart!\n" +
+                        "No books with bookId: " + bookId + " left in User's cart!");
             }
             shoppingCartService.delete(bookId, userId, quantity);
-            return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were deleted from User's cart!\n"+
-                    "Total book/s with bookId: "+ bookId +" in User's cart: " + cart.getQuantity());
+            return ResponseEntity.ok().body(quantity + " book/s with bookId: " + bookId + " was/were deleted from User's cart!\n" +
+                    "Total book/s with bookId: " + bookId + " in User's cart: " + cart.getQuantity());
         }
-        return ResponseEntity.badRequest().body("No books with bookId: " + bookId +" left in User's cart!");
+        return ResponseEntity.badRequest().body("No books with bookId: " + bookId + " left in User's cart!");
     }
 
     // get all books in User's cart (ShoppingCart Get Request)
@@ -110,6 +118,7 @@ public class BookstoreController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(shoppingCartService.getAllCartItems(userId));
     }
+
     // get total price from User's cart (ShoppingCart Get Request)
     @GetMapping("/total-price/{userId}")
     public ResponseEntity<String> totalPrice(@PathVariable(value = "userId") Long userId) {
@@ -117,9 +126,31 @@ public class BookstoreController {
     }
 
     @PostMapping("/rating")
-    public ResponseEntity<Rating>createBook(@RequestBody Rating rating) {
+    public ResponseEntity<Rating> createBook(@RequestBody Rating rating) {
         rating.setDate(new Date());
         return ResponseEntity.ok().body(ratingService.create(rating));
+    }
+
+    @GetMapping("/books/genre")
+    public ResponseEntity<List<Book>> getBooksByGenre(@RequestParam String genre) {
+        List<Book> books = bookService.getBooksByGenre(genre);
+
+        if (books.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(books);
+    }
+
+    @GetMapping("/books/rating")
+    public ResponseEntity<List<Book>> getBooksByRating(@RequestParam Double rating) {
+        List<Book> books = bookService.getBooksByRating(rating);
+
+        if (books.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(books);
     }
 
     @GetMapping("/rating/average/{bookId}")
@@ -130,7 +161,7 @@ public class BookstoreController {
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<Comment>createComment(@RequestBody Comment comment) {
+    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         comment.setDate(new Date());
         return ResponseEntity.ok().body(commentService.create(comment));
     }
@@ -139,6 +170,7 @@ public class BookstoreController {
     public ResponseEntity<List<Comment>> getCommentsForBook(@PathVariable(value = "bookId") Long bookId) {
         return ResponseEntity.ok().body(commentService.findByBookId(bookId));
     }
+
     //creating wishlist
     @PostMapping("/wishlist/{wishlistName}/{userId}")
     public ResponseEntity<Wishlist> createWishlist(@RequestBody @PathVariable (value = "wishlistName") String wishlistName, @PathVariable(value = "userId") Long userId){
@@ -158,6 +190,24 @@ public class BookstoreController {
     @GetMapping("wishlist/{id}")
     public ResponseEntity<Optional<Wishlist>> getWishlist(@RequestBody @PathVariable(value = "id") Long wishlistId){
         return ResponseEntity.ok().body(wishlistService.getWishlist(wishlistId));
+
+    @GetMapping("/books/top-sellers")
+    public ResponseEntity<List<Book>> getTopSellers() {
+        List<Book> books = bookService.getTopSellersBooks();
+
+        if (books.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().body(books);
+    }
+    @PatchMapping("/books/discount")
+    public ResponseEntity<Void> discountBooksByPublisher(
+            @RequestParam String publisher,
+            @RequestParam Double discountPercent) {
+
+        bookService.discountBooksByPublisher(publisher, discountPercent);
+        return ResponseEntity.noContent().build();
     }
 }
 
