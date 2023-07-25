@@ -6,6 +6,7 @@ import bookstore.repository.BookRepository;
 import bookstore.model.Book;
 import bookstore.service.BookService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +79,18 @@ public class BookServiceImpl implements BookService {
 
     public List<Book> getBooksByRating(Double rating) {
         return bookRepository.findByRatingGreaterThanEqual(rating);
+    }
+
+    public List<Book> getTopSellersBooks() {
+        List<Book> books = bookRepository.findTopSellers();
+        return books.size() > 10 ? books.subList(0, 10) : books;
+    }
+    @Transactional
+    public void discountBooksByPublisher(String publisher, Double discountPercent) {
+        List<Book> books = bookRepository.findByPublisher(publisher);
+        for (Book book : books) {
+            double newPrice = book.getPrice() * (1 - discountPercent/100);
+            book.setPrice(newPrice);
+        }
     }
 }

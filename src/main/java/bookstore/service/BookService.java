@@ -20,4 +20,7 @@ public interface BookService {
     public List<Book> findByISBN(String isbn);
     public List<Book> getByAuthor(String author);
 
+    List<Book> getTopSellersBooks();
+
+    void discountBooksByPublisher(String publisher, Double discountPercent);
 }
