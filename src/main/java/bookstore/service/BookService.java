@@ -12,15 +12,9 @@ public interface BookService {
     public void deleteBook(Long bookId);
     public Optional<Book> getBook(Long bookId);
     public List<Book> getAllCBooks();
-
-
     List<Book> getBooksByGenre(String genre);
-    List<Book> getBooksByRating(Double rating);
-
     public List<Book> findByISBN(String isbn);
     public List<Book> getByAuthor(String author);
-
     List<Book> getTopSellersBooks();
-
     void discountBooksByPublisher(String publisher, Double discountPercent);
 }
