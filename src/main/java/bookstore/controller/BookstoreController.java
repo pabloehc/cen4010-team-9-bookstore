@@ -157,7 +157,7 @@ public class BookstoreController {
         return ResponseEntity.ok().body(wishlistService.createWishlist(wishlistName, userId));
     }
     //add a book to user's wishlist
-    @PostMapping("/wishlist/{bookId}/{id}")
+    @PostMapping("/wishlist/add-book-to-wishlist/{bookId}/{id}")
     public ResponseEntity<Wishlist> updateWishlist(@RequestBody @PathVariable(value = "bookId") Long bookId, @PathVariable(value = "id") Long wishlistId){
         return ResponseEntity.ok().body(wishlistService.updateWishlist(bookId, wishlistId));
     }
@@ -168,7 +168,7 @@ public class BookstoreController {
     }
     //get list of books from user's wishlist
     @GetMapping("wishlist/{id}")
-    public ResponseEntity<Optional<Wishlist>> getWishlist(@RequestBody @PathVariable(value = "id") Long wishlistId) {
+    public ResponseEntity<String> getWishlist(@RequestBody @PathVariable(value = "id") Long wishlistId) {
         return ResponseEntity.ok().body(wishlistService.getWishlist(wishlistId));
     }
 

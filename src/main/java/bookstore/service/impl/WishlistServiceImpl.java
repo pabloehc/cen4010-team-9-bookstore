@@ -3,6 +3,7 @@ package bookstore.service.impl;
 import bookstore.model.Wishlist;
 import bookstore.model.Book;
 import bookstore.service.WishlistService;
+import bookstore.service.BookService;
 import bookstore.repository.BookRepository;
 import bookstore.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,10 @@ public class WishlistServiceImpl implements WishlistService {
     WishlistRepository wishlistRepository;
     BookRepository bookRepository;
 
-    public WishlistServiceImpl(WishlistRepository wishlistRepository){this.wishlistRepository = wishlistRepository;}
+    public WishlistServiceImpl(WishlistRepository wishlistRepository, BookRepository bookRepository){
+        this.wishlistRepository = wishlistRepository;
+        this.bookRepository = bookRepository;
+    }
 
     @Override
     public Wishlist createWishlist(String wishlistName, Long userId) {
@@ -41,8 +45,8 @@ public class WishlistServiceImpl implements WishlistService {
         return wishlistRepository.save(delete);
     }
     @Override
-    public Optional<Wishlist> getWishlist(Long wishlistId) {
+    public String getWishlist(Long wishlistId) {
         Wishlist wishlist = wishlistRepository.findById(wishlistId).get();
-        return wishlistRepository.findById(wishlistId);
+        return wishlist.getBooksJson();
     }
 }

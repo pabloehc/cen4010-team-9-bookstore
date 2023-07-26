@@ -1,7 +1,9 @@
 package bookstore.model;
 
+import com.google.gson.GsonBuilder;
 import jakarta.persistence.*;
 import java.util.*;
+import com.google.gson.Gson;
 
 @Entity
 public class Wishlist {
@@ -47,10 +49,14 @@ public class Wishlist {
         books.add(book);
     }
     public void removeBooks(Long bookId){
-        books.removeIf(book -> book.getId() == bookId);
+        this.books.removeIf(book -> book.getId() == bookId);
     }
     public String getBooks(){
         return "Books{" + books +'\'' +"}";
+    }
+    public String getBooksJson(){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(books);
     }
 
     @Override
