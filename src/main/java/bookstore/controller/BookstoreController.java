@@ -81,15 +81,6 @@ public class BookstoreController {
        shoppingCartService.update(userId, bookId, quantity);
        return ResponseEntity.ok().body(quantity + " book/s with bookId: "+ bookId +" was/were added to User's cart!\n" +
                "The total book/s with bookId: "+ bookId +" in User's cart: " + userCarts.get(0).getQuantity());
-        List<ShoppingCart> userCarts = shoppingCartService.getByBookIdAndUserId(bookId, userId);
-
-        if (userCarts.isEmpty()) {
-            shoppingCartService.create(userId, bookId, quantity);
-            return ResponseEntity.ok().body(quantity + " book/s with bookId: " + bookId + " was/were added to User's cart!");
-        }
-        shoppingCartService.update(userId, bookId, quantity);
-        return ResponseEntity.ok().body(quantity + " book/s with bookId: " + bookId + " was/were added to User's cart!\n" +
-                "The total book/s with bookId: " + bookId + " in User's cart: " + userCarts.get(0).getQuantity());
     }
 
     // delete book/s from User's cart (ShoppingCart Delete Request)
@@ -142,17 +133,6 @@ public class BookstoreController {
         return ResponseEntity.ok().body(books);
     }
 
-    @GetMapping("/books/rating")
-    public ResponseEntity<List<Book>> getBooksByRating(@RequestParam Double rating) {
-        List<Book> books = bookService.getBooksByRating(rating);
-
-        if (books.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok().body(books);
-    }
-
     @GetMapping("/rating/average/{bookId}")
     public ResponseEntity<String> getBookAverageRating(@PathVariable(value = "bookId") Long bookId) {
         var format = new DecimalFormat("#.#");
@@ -188,8 +168,9 @@ public class BookstoreController {
     }
     //get list of books from user's wishlist
     @GetMapping("wishlist/{id}")
-    public ResponseEntity<Optional<Wishlist>> getWishlist(@RequestBody @PathVariable(value = "id") Long wishlistId){
+    public ResponseEntity<Optional<Wishlist>> getWishlist(@RequestBody @PathVariable(value = "id") Long wishlistId) {
         return ResponseEntity.ok().body(wishlistService.getWishlist(wishlistId));
+    }
 
     @GetMapping("/books/top-sellers")
     public ResponseEntity<List<Book>> getTopSellers() {

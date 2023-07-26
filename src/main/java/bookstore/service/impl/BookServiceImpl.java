@@ -4,6 +4,7 @@ import bookstore.model.Author;
 import bookstore.repository.AuthorRepository;
 import bookstore.repository.BookRepository;
 import bookstore.model.Book;
+import bookstore.repository.RatingRepository;
 import bookstore.service.BookService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,6 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
     BookRepository bookRepository;
-    AuthorRepository authorRepository;
-    AuthorServiceImpl authorService;
 
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -75,10 +74,6 @@ public class BookServiceImpl implements BookService {
     public List<Book> getByAuthor(String author)
     {
         return bookRepository.findAllByAuthor(author);
-    }
-
-    public List<Book> getBooksByRating(Double rating) {
-        return bookRepository.findByRatingGreaterThanEqual(rating);
     }
 
     public List<Book> getTopSellersBooks() {
