@@ -2,12 +2,14 @@ package bookstore.service;
 
 import bookstore.model.Wishlist;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface WishlistService {
 
-    Wishlist createWishlist(String wishlistName, Long userId);
-    public Wishlist updateWishlist(Long bookId, Long wishlistId);
-    Wishlist deleteFromWishlist(Long bookId, Long wishlistId);
-    Optional<Wishlist> getWishlist(Long wishlistId);
+    public String createWishlist(Wishlist wishlist);
+    public String updateWishlist(Wishlist wishlist);
+    public String deleteWishlist(String wishlistId);
+    public Wishlist getWishlist(String wishlistId);
+    public List<Wishlist> getAllWishlists();
+    public List<Wishlist> getById(String wishlistId);
 }
