@@ -19,6 +19,8 @@ public class Book {
     private String publisher;
     private int yearPublished;
     private int copiesSold;
+    private Double rating;
+
 
     public Book() {
     }
@@ -113,6 +115,14 @@ public class Book {
 
     public void setCopiesSold(int soldCopies) {
         this.copiesSold = soldCopies;
+    }
+
+    public Double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     @Override
